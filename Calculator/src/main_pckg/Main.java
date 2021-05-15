@@ -98,6 +98,37 @@ public class Main {
     public static Integer calc(ArrayList<Integer>intExpr){
         int finalAns=0;
         int numbIndBig=intExpr.get(0);
+        finalAns=intExpr.get(numbIndBig);
+
+        for(int i=1;i<numbIndBig;i++){
+            int op2=intExpr.get(numbIndBig+i);
+            switch(intExpr.get(i)){
+                case 1:
+                    finalAns=finalAns/op2;
+                    break;
+                case 2:
+                    finalAns*=op2;
+                    break;
+                case 3:
+                    finalAns+=op2;
+                    break;
+                case 4:
+                    finalAns-=op2;
+                    break;
+                default:
+                    System.out.println("Error in input");
+                    return -1;
+
+
+            }
+
+
+
+
+
+
+        }
+
 
 
         return finalAns;
@@ -125,6 +156,7 @@ public class Main {
         //simply gives final result using the arraylist
 
         System.out.println(intermediateArray);
+        System.out.println(result);
 
     }
 
