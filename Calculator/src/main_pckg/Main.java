@@ -137,6 +137,7 @@ public class Main {
 
         int curOp=0;
 
+        //doing stack ops
         while(intExpr.size()>1){
 
             for(int i=0;i<=numbIndBig;i++){
