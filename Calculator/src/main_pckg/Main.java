@@ -9,10 +9,33 @@ import static java.lang.Math.pow;
 //Right now assuming input has no mathematical evaluating errors
 public class Main {
 
-    final static char operators[] = {'/', '*', '+', '-'};
+    final static char operators[] = {'/', '*', '+', '-'}; //placed in order of priority //indexing starts from one here when putting in inter Arr
     final static char numberList[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
     static Scanner scanner;
 
+    //using this to remove all the other unnecessary characters
+
+
+    public static Integer doOperation(Integer a1, Integer a2, Integer operation){
+        switch (operation){
+            case 1:
+                return a1/a2;
+
+            case 2:
+                return a1*a2;
+
+            case 3:
+                return a1+a2;
+
+            case 4:
+                return a1-a2;
+
+            default:
+                break;
+
+        }
+        return -1;
+    }
 
     public static Integer charToInt(char c) {
 
@@ -20,7 +43,9 @@ public class Main {
             if (numberList[i] == c) {
                 return ((i + 1) % 10);
             }
+
         }
+
 
         return -1;
 
@@ -37,7 +62,10 @@ public class Main {
     public static Integer stringConv(ArrayList<Character> numb) {
         int result = 0;
 
+
+
         for (int i = 0; i < numb.size(); i++) {
+
             result += charToInt(numb.get(numb.size() - i - 1)) * (int) (pow(10, i));
 
         }
@@ -73,8 +101,12 @@ public class Main {
 
             }
             //adding digits
+            //adding c1 bit to make input cleaner; no spaces etc
             if (!isOp) {
-                a1.add(expr.charAt(i));
+                char c1=expr.charAt(i);
+                if(c1!=' ') {
+                    a1.add(expr.charAt(i));
+                }
             }
 
         }
@@ -94,44 +126,43 @@ public class Main {
 
     //calculating final number
 
-    //Version 1.0 :Doesnt apply bodmas rule; just does calculation from left to right
+    //Version 2.0 : Applying bodmas rule ; changing the way operations stack up; instead of using finalAns, will
+    // iterate through the opArr from left to right; will do operation based on bodmas, store the answer of \
+    //that operation in left most numbArr
     public static Integer calc(ArrayList<Integer>intExpr){
-        int finalAns=0;
-        int numbIndBig=intExpr.get(0);
-        finalAns=intExpr.get(numbIndBig);
 
-        for(int i=1;i<numbIndBig;i++){
-            int op2=intExpr.get(numbIndBig+i);
-            switch(intExpr.get(i)){
-                case 1:
-                    finalAns=finalAns/op2;
-                    break;
-                case 2:
-                    finalAns*=op2;
-                    break;
-                case 3:
-                    finalAns+=op2;
-                    break;
-                case 4:
-                    finalAns-=op2;
-                    break;
-                default:
-                    System.out.println("Error in input");
-                    return -1;
+        int numbIndBig=intExpr.get(0)-1;
 
+        intExpr.remove(0);
+
+        int curOp=0;
+
+        while(intExpr.size()>1){
+
+            for(int i=0;i<=numbIndBig;i++){
+                if(i==numbIndBig){
+                    curOp+=1;
+
+                    break;
+                }
+                else if(intExpr.get(i)==curOp){
+                    intExpr.set(numbIndBig+i,doOperation(intExpr.get(numbIndBig+i),intExpr.get(numbIndBig+i+1),curOp));
+                    intExpr.remove(i);
+                    intExpr.remove(numbIndBig+i);
+                    numbIndBig-=1;
+                    break;
+                }
 
             }
-
-
-
-
-
-
         }
 
 
 
-        return finalAns;
+
+
+
+
+        return intExpr.get(0);
     }
     /* main app*/
     public static void calculatorApp() {
